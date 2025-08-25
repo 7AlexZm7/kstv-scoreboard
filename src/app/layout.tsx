@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'KS TV ScoreBoard',
-  description: 'Create and manage real-time sports scoreboards with OBS integration',
+  description: 'Professional scoreboard system for live streaming with OBS integration',
 }
 
 export default function RootLayout({
