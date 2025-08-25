@@ -8,8 +8,12 @@ export async function middleware(request: NextRequest) {
 
   // Protect admin routes
   if (pathname.startsWith('/admin')) {
-    if (!token || token.role !== 'ADMIN') {
+    if (!token) {
       return NextResponse.redirect(new URL('/auth/signin', request.url))
+    }
+    
+    if (token.role !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/', request.url))
     }
   }
 
@@ -27,13 +31,21 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (pathname.startsWith('/api/dashboard') || pathname.startsWith('/api/scoreboards')) {
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+  }
+
   return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
     '/admin/:path*',
-    '/api/admin/:path*'
+    '/dashboard/:path*',
+    '/api/admin/:path*',
+    '/api/dashboard/:path*',
+    '/api/scoreboards/:path*'
   ]
 }
